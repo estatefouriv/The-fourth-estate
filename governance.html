@@ -85,7 +85,7 @@
     .btn { transition: background .2s, transform .2s, box-shadow .2s; }
     .btn:hover { transform: translateY(-3px) scale(1.03); box-shadow: 0 10px 24px rgba(253,92,50,.35); }
     .logo-3d { width:60px; height:60px; margin:0 auto 10px; perspective:500px; }
-    .logo-3d img { width:100%; height:100%; object-fit:contain; display:block; animation: spin3d 36s linear infinite, floatY 8s ease-in-out infinite; transform-style: preserve-3d; }
+    .logo-3d img { width:100%; height:100%; object-fit:contain; display:block; animation: spin3d 36s linear infinite; transform-style: preserve-3d; }
     @keyframes spin3d { from { transform: rotateY(0deg); } to { transform: rotateY(360deg); } }
     @media (prefers-reduced-motion: reduce) {
       .reveal { opacity:1; transform:none; transition:none; }
@@ -94,7 +94,7 @@
   
     /* === ALIVE ENHANCEMENTS === */
     .logo-3d { width:60px; height:60px; margin:0 auto 14px; perspective:500px; }
-    .logo-3d img { animation: spin3d 36s linear infinite, floatY 8s ease-in-out infinite; }
+    .logo-3d img { animation: spin3d 36s linear infinite; }
     @keyframes floatY { 0%,100% { transform: translateY(0) rotateY(0deg); } 50% { transform: translateY(-8px) rotateY(180deg); } }
 
     /* animated orange accent bar under masthead title */
