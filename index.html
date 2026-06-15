@@ -125,6 +125,23 @@
       .footer-links{flex-wrap:wrap;}
       .topbar-inner{justify-content:center;}
     }
+  
+    /* === 3D ENHANCEMENTS === */
+    body { perspective: 1500px; }
+    .reveal { opacity:0; transform: translateY(46px) rotateX(10deg); transform-origin: top center; transition: opacity .8s cubic-bezier(.2,.7,.2,1), transform .8s cubic-bezier(.2,.7,.2,1); }
+    .reveal.in-view { opacity:1; transform: translateY(0) rotateX(0deg); }
+    .section-tile { transform-style: preserve-3d; transition: transform .25s ease, background .2s; will-change: transform; }
+    .nav a, .lang-bar a { transition: color .2s, border-color .2s, transform .2s; }
+    .nav a:hover, .lang-bar a:hover { transform: translateY(-2px); }
+    .btn { transition: background .2s, transform .2s, box-shadow .2s; }
+    .btn:hover { transform: translateY(-3px) scale(1.03); box-shadow: 0 10px 24px rgba(253,92,50,.35); }
+    .logo-3d { width:56px; height:56px; margin:0 auto 10px; perspective:400px; }
+    .logo-3d img { width:100%; height:100%; object-fit:contain; display:block; animation: spin3d 10s linear infinite; transform-style: preserve-3d; }
+    @keyframes spin3d { from { transform: rotateY(0deg); } to { transform: rotateY(360deg); } }
+    @media (prefers-reduced-motion: reduce) {
+      .reveal { opacity:1; transform:none; transition:none; }
+      .logo-3d img { animation:none; }
+    }
   </style>
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-ER98GKZDE0"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag("js",new Date());gtag("config","G-ER98GKZDE0");</script>
 </head>
@@ -148,6 +165,7 @@
   <header class="masthead">
     <div class="container">
       <div class="masthead-inner">
+        <div class="logo-3d"><img src="logo.png" alt="The Fourth Estate logo" /></div>
         <span class="masthead-eyebrow">Student Journal of Politics, Policy &amp; Society</span>
         <h1 class="masthead-title">The Fourth <span>Estate</span></h1>
         <p class="masthead-tagline">The News. Our News.</p>
@@ -187,7 +205,7 @@
 
   <main>
     <div class="container">
-      <div class="coming-soon fade-up">
+      <div class="coming-soon reveal">
         <div class="coming-soon-badge">Launching Soon</div>
         <h2>Our first articles<br>are on their way.</h2>
         <p>The Fourth Estate is a student publication dedicated to rigorous, accessible analysis of politics, policy, society, and culture.</p>
@@ -210,15 +228,15 @@
     <div class="about-band">
       <div class="container">
         <div class="about-inner">
-          <div class="about-col">
+          <div class="about-col reveal">
             <h4>About the Journal</h4>
             <p><strong>The Fourth Estate</strong> is a student-run publication dedicated to rigorous, accessible analysis of politics, policy, society, and culture. We believe student voices belong in public debate.</p>
           </div>
-          <div class="about-col">
+          <div class="about-col reveal">
             <h4>Submit Your Writing</h4>
             <p>We publish student-written articles every one to two weeks. Pitches and submissions are open to all students. <strong>Write for us.</strong></p>
           </div>
-          <div class="about-col">
+          <div class="about-col reveal">
             <h4>Editorial Standards</h4>
             <p>All articles are reviewed by our editorial team for accuracy, clarity, and fairness. We correct errors promptly and transparently. <strong>Facts over narratives.</strong></p>
           </div>
@@ -228,7 +246,7 @@
 
     <div class="quote-band">
       <div class="container">
-        <p>Curious minds<span>.</span> Bold ideas<span>.</span> Meaningful stories<span>.</span></p>
+        <p class="reveal">Curious minds<span>.</span> Bold ideas<span>.</span> Meaningful stories<span>.</span></p>
       </div>
     </div>
   </main>
@@ -296,5 +314,41 @@
     }
   </script>
 
+
+  <script>
+    // 3D scroll reveal
+    (function(){
+      var els = document.querySelectorAll('.reveal');
+      if ('IntersectionObserver' in window) {
+        var obs = new IntersectionObserver(function(entries){
+          entries.forEach(function(entry){
+            if (entry.isIntersecting) {
+              entry.target.classList.add('in-view');
+              obs.unobserve(entry.target);
+            }
+          });
+        }, {threshold:0.12});
+        els.forEach(function(el){ obs.observe(el); });
+      } else {
+        els.forEach(function(el){ el.classList.add('in-view'); });
+      }
+    })();
+    // 3D tilt on section tiles
+    (function(){
+      var tiles = document.querySelectorAll('.section-tile');
+      tiles.forEach(function(tile){
+        tile.addEventListener('mousemove', function(e){
+          var r = tile.getBoundingClientRect();
+          var x = e.clientX - r.left, y = e.clientY - r.top;
+          var rx = ((y - r.height/2) / r.height) * -14;
+          var ry = ((x - r.width/2) / r.width) * 14;
+          tile.style.transform = 'perspective(500px) rotateX('+rx+'deg) rotateY('+ry+'deg) scale3d(1.04,1.04,1.04)';
+        });
+        tile.addEventListener('mouseleave', function(){
+          tile.style.transform = 'perspective(500px) rotateX(0deg) rotateY(0deg) scale3d(1,1,1)';
+        });
+      });
+    })();
+  </script>
 </body>
 </html>
