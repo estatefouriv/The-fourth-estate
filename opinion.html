@@ -74,18 +74,79 @@
     .fade-up{animation:fadeUp .7s ease both;}
     @media(max-width:860px){.footer-top{flex-direction:column;}.footer-links{gap:28px;}}
     @media(max-width:600px){.container{padding:0 18px;}.footer-links{flex-wrap:wrap;}.topbar-inner{justify-content:center;}.topbar-nav{flex-wrap:wrap;}}
+  
+    /* === 3D ENHANCEMENTS === */
+    body { perspective: 1500px; }
+    .reveal { opacity:0; transform: translateY(46px) rotateX(10deg); transform-origin: top center; transition: opacity .8s cubic-bezier(.2,.7,.2,1), transform .8s cubic-bezier(.2,.7,.2,1); }
+    .reveal.in-view { opacity:1; transform: translateY(0) rotateX(0deg); }
+    .section-tile { transform-style: preserve-3d; transition: transform .25s ease, background .2s; will-change: transform; }
+    .nav a, .lang-bar a { transition: color .2s, border-color .2s, transform .2s; }
+    .nav a:hover, .lang-bar a:hover { transform: translateY(-2px); }
+    .btn { transition: background .2s, transform .2s, box-shadow .2s; }
+    .btn:hover { transform: translateY(-3px) scale(1.03); box-shadow: 0 10px 24px rgba(253,92,50,.35); }
+    .logo-3d { width:56px; height:56px; margin:0 auto 10px; perspective:400px; }
+    .logo-3d img { width:100%; height:100%; object-fit:contain; display:block; animation: spin3d 10s linear infinite; transform-style: preserve-3d; }
+    @keyframes spin3d { from { transform: rotateY(0deg); } to { transform: rotateY(360deg); } }
+    @media (prefers-reduced-motion: reduce) {
+      .reveal { opacity:1; transform:none; transition:none; }
+      .logo-3d img { animation:none; }
+    }
+  
+    /* === ALIVE ENHANCEMENTS === */
+    .logo-3d { width:110px; height:110px; margin:0 auto 14px; perspective:500px; }
+    .logo-3d img { animation: spin3d 9s linear infinite, floatY 4s ease-in-out infinite; filter: drop-shadow(0 8px 20px rgba(253,92,50,.35)); }
+    @keyframes floatY { 0%,100% { transform: translateY(0) rotateY(0deg); } 50% { transform: translateY(-8px) rotateY(180deg); } }
+
+    /* animated orange accent bar under masthead title */
+    .masthead-title { position:relative; }
+    .masthead-accent { display:block; width:60px; height:4px; background:var(--orange); margin:10px auto 0; border-radius:2px; animation: pulseWidth 3s ease-in-out infinite; }
+    @keyframes pulseWidth { 0%,100% { width:60px; opacity:.6; } 50% { width:140px; opacity:1; } }
+
+    /* link underline sweep */
+    .nav a, .lang-bar a, footer .footer-col a, .topbar a { position:relative; }
+    .nav a::after, .lang-bar a::after { content:''; position:absolute; left:50%; bottom:6px; width:0; height:2px; background:var(--orange); transition: width .25s ease, left .25s ease; }
+    .nav a:hover::after, .lang-bar a:hover::after, .nav a.active::after, .lang-bar a.active::after { width:70%; left:15%; }
+
+    /* floating ambient orange blobs */
+    .ambient-blob { position:fixed; border-radius:50%; background: radial-gradient(circle, rgba(253,92,50,.18), transparent 70%); filter: blur(40px); pointer-events:none; z-index:0; animation: drift 18s ease-in-out infinite; }
+    .ambient-blob.b1 { width:340px; height:340px; top:-100px; left:-100px; animation-delay:0s; }
+    .ambient-blob.b2 { width:260px; height:260px; bottom:10%; right:-80px; animation-delay:6s; }
+    .ambient-blob.b3 { width:200px; height:200px; top:40%; left:50%; animation-delay:11s; }
+    @keyframes drift { 0%,100% { transform: translate(0,0) scale(1); } 33% { transform: translate(30px,-20px) scale(1.1); } 66% { transform: translate(-20px,25px) scale(.95); } }
+
+    /* card / tile glow on hover */
+    .section-tile { position:relative; overflow:hidden; }
+    .section-tile::before { content:''; position:absolute; inset:0; background: radial-gradient(circle at var(--mx,50%) var(--my,50%), rgba(253,92,50,.18), transparent 60%); opacity:0; transition: opacity .3s; pointer-events:none; }
+    .section-tile:hover::before { opacity:1; }
+
+    /* coming-soon badge pulse */
+    .coming-soon-badge { animation: badgePulse 2.4s ease-in-out infinite; }
+    @keyframes badgePulse { 0%,100% { box-shadow: 0 0 0 0 rgba(253,92,50,.5); } 50% { box-shadow: 0 0 0 8px rgba(253,92,50,0); } }
+
+    /* dark mode toggle subtle bounce on click handled via JS class */
+    .dark-toggle.clicked { animation: tinyBounce .35s ease; }
+    @keyframes tinyBounce { 0% { transform: scale(1); } 40% { transform: scale(1.15); } 100% { transform: scale(1); } }
+
+    main, .container { position: relative; z-index: 1; }
+
+    @media (prefers-reduced-motion: reduce) {
+      .logo-3d img, .masthead-accent, .ambient-blob, .coming-soon-badge { animation: none !important; }
+    }
+    @media (max-width:700px) {
+      .ambient-blob { display:none; }
+    }
   </style>
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-ER98GKZDE0"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag("js",new Date());gtag("config","G-ER98GKZDE0");</script>
 </head>
 <body>
   <div class="topbar"><div class="container"><div class="topbar-inner"><nav class="topbar-nav"><a href="https://www.instagram.com/thefourth.estate.ma?utm_source=qr&igsh=MWRrNnRkYWtleTl6Ng==" target="_blank">Instagram</a><a href="#">LinkedIn</a><a href="mailto:estatefouriv@gmail.com">Contact</a><button class="dark-toggle" id="darkBtn" onclick="toggleDark()">&#9790; Dark</button></nav></div></div></div>
-  <header class="masthead"><div class="container"><div class="masthead-inner"><span class="masthead-eyebrow">Student Journal of Politics, Policy &amp; Society</span><a href="index.html"><h1 class="masthead-title">The Fourth <span>Estate</span></h1></a><p class="masthead-tagline">The News. Our News.</p></div></div></header>
+  <header class="masthead"><div class="container"><div class="masthead-inner"><div class="logo-3d" style="width:70px;height:70px;"><img src="logo.png" alt="The Fourth Estate logo" /></div><span class="masthead-eyebrow">Student Journal of Politics, Policy &amp; Society</span><a href="index.html"><h1 class="masthead-title">The Fourth <span>Estate</span></h1></a><p class="masthead-tagline">The News. Our News.</p></div></div></header>
   <nav class="nav"><div class="container"><div class="nav-inner"><a href="index.html">Home</a><a href="politics.html">Politics</a><a href="governance.html">Governance</a><a href="international.html">International</a><a href="economics.html">Economics</a><a href="policy.html">Policy</a><a href="media.html">Media</a><a href="society.html">Society &amp; Culture</a><a href="campus.html">Campus Life</a><a href="opinion.html">Opinion</a></div></div></nav>
   <div class="lang-bar"><div class="container"><div class="lang-bar-inner"><span class="lang-label">Read in</span><a href="arabic.html">&#1575;&#1604;&#1593;&#1585;&#1576;&#1610;&#1577;</a><a href="english.html">English</a><a href="french.html">Fran&#231;ais</a></div></div></div>
-  <div class="section-hero"><div class="container"><div class="section-hero-kicker">Section</div><h1>Opinion</h1><p>Bold takes and analysis from our editorial writers.</p></div></div>
+  <div class="section-hero"><div class="container"><div class="reveal"><div class="section-hero-kicker">Section</div><h1>Opinion</h1><p>Bold takes and analysis from our editorial writers.</p></div></div></div>
   <main>
-    <div class="container"><div class="empty-state fade-up"><div class="empty-state-icon">&#8212;</div><h3>Articles coming soon.</h3><p>Our writers are working on it. Follow us on Instagram for updates.</p><a href="https://www.instagram.com/thefourth.estate.ma?utm_source=qr&igsh=MWRrNnRkYWtleTl6Ng==" target="_blank" class="btn">Follow us on Instagram</a></div></div>
-    <div class="quote-band"><div class="container"><p>Curious minds<span>.</span> Bold ideas<span>.</span> Meaningful stories<span>.</span></p></div></div>
+    <div class="container"><div class="empty-state reveal"><div class="empty-state-icon">&#8212;</div><h3>Articles coming soon.</h3><p>Our writers are working on it. Follow us on Instagram for updates.</p><a href="https://www.instagram.com/thefourth.estate.ma?utm_source=qr&igsh=MWRrNnRkYWtleTl6Ng==" target="_blank" class="btn">Follow us on Instagram</a></div></div>
+    <div class="quote-band"><div class="container"><p class="reveal">Curious minds<span>.</span> Bold ideas<span>.</span> Meaningful stories<span>.</span></p></div></div>
   </main>
   <footer><div class="container">
     <div class="footer-top">
@@ -102,6 +163,73 @@
   <script>
     function toggleDark(){var d=document.body.classList.toggle('dark');document.getElementById('darkBtn').textContent=d?'\u2600 Light':'\u263E Dark';localStorage.setItem('theme',d?'dark':'light');}
     if(localStorage.getItem('theme')==='dark'){document.body.classList.add('dark');document.getElementById('darkBtn').textContent='\u2600 Light';}
+  </script>
+
+  <script>
+    // 3D scroll reveal
+    (function(){
+      var els = document.querySelectorAll('.reveal');
+      if ('IntersectionObserver' in window) {
+        var obs = new IntersectionObserver(function(entries){
+          entries.forEach(function(entry){
+            if (entry.isIntersecting) {
+              entry.target.classList.add('in-view');
+              obs.unobserve(entry.target);
+            }
+          });
+        }, {threshold:0.12});
+        els.forEach(function(el){ obs.observe(el); });
+      } else {
+        els.forEach(function(el){ el.classList.add('in-view'); });
+      }
+    })();
+    // 3D tilt on section tiles
+    (function(){
+      var tiles = document.querySelectorAll('.section-tile');
+      tiles.forEach(function(tile){
+        tile.addEventListener('mousemove', function(e){
+          var r = tile.getBoundingClientRect();
+          var x = e.clientX - r.left, y = e.clientY - r.top;
+          var rx = ((y - r.height/2) / r.height) * -14;
+          var ry = ((x - r.width/2) / r.width) * 14;
+          tile.style.transform = 'perspective(500px) rotateX('+rx+'deg) rotateY('+ry+'deg) scale3d(1.04,1.04,1.04)';
+        });
+        tile.addEventListener('mouseleave', function(){
+          tile.style.transform = 'perspective(500px) rotateX(0deg) rotateY(0deg) scale3d(1,1,1)';
+        });
+      });
+    })();
+  </script>
+
+  <script>
+    // Ambient floating blobs
+    (function(){
+      var wrap = document.createElement('div');
+      wrap.innerHTML = '<div class="ambient-blob b1"></div><div class="ambient-blob b2"></div><div class="ambient-blob b3"></div>';
+      while (wrap.firstChild) document.body.insertBefore(wrap.firstChild, document.body.firstChild);
+    })();
+    // Tile glow follows cursor
+    (function(){
+      document.querySelectorAll('.section-tile').forEach(function(tile){
+        tile.addEventListener('mousemove', function(e){
+          var r = tile.getBoundingClientRect();
+          var mx = ((e.clientX - r.left) / r.width) * 100;
+          var my = ((e.clientY - r.top) / r.height) * 100;
+          tile.style.setProperty('--mx', mx + '%');
+          tile.style.setProperty('--my', my + '%');
+        });
+      });
+    })();
+    // Dark toggle bounce
+    (function(){
+      var btn = document.getElementById('darkBtn');
+      if (btn) {
+        btn.addEventListener('click', function(){
+          btn.classList.remove('clicked');
+          requestAnimationFrame(function(){ btn.classList.add('clicked'); });
+        });
+      }
+    })();
   </script>
 </body>
 </html>
