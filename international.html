@@ -84,8 +84,8 @@
     .nav a:hover, .lang-bar a:hover { transform: translateY(-2px); }
     .btn { transition: background .2s, transform .2s, box-shadow .2s; }
     .btn:hover { transform: translateY(-3px) scale(1.03); box-shadow: 0 10px 24px rgba(253,92,50,.35); }
-    .logo-3d { width:56px; height:56px; margin:0 auto 10px; perspective:400px; }
-    .logo-3d img { width:100%; height:100%; object-fit:contain; display:block; animation: spin3d 10s linear infinite; transform-style: preserve-3d; }
+    .logo-3d { width:80px; height:80px; margin:0 auto 10px; perspective:500px; }
+    .logo-3d img { width:100%; height:100%; object-fit:contain; display:block; animation: spin3d 18s linear infinite, floatY 6s ease-in-out infinite; transform-style: preserve-3d; }
     @keyframes spin3d { from { transform: rotateY(0deg); } to { transform: rotateY(360deg); } }
     @media (prefers-reduced-motion: reduce) {
       .reveal { opacity:1; transform:none; transition:none; }
@@ -140,7 +140,7 @@
 </head>
 <body>
   <div class="topbar"><div class="container"><div class="topbar-inner"><nav class="topbar-nav"><a href="https://www.instagram.com/thefourth.estate.ma?utm_source=qr&igsh=MWRrNnRkYWtleTl6Ng==" target="_blank">Instagram</a><a href="#">LinkedIn</a><a href="mailto:estatefouriv@gmail.com">Contact</a><button class="dark-toggle" id="darkBtn" onclick="toggleDark()">&#9790; Dark</button></nav></div></div></div>
-  <header class="masthead"><div class="container"><div class="masthead-inner"><div class="logo-3d" style="width:70px;height:70px;"><img src="logo.png" alt="The Fourth Estate logo" /></div><span class="masthead-eyebrow">Student Journal of Politics, Policy &amp; Society</span><a href="index.html"><h1 class="masthead-title">The Fourth <span>Estate</span></h1></a><p class="masthead-tagline">The News. Our News.</p></div></div></header>
+  <header class="masthead"><div class="container"><div class="masthead-inner"><div class="logo-3d"><img src="logo.png" alt="The Fourth Estate logo" /></div><span class="masthead-eyebrow">Student Journal of Politics, Policy &amp; Society</span><a href="index.html"><h1 class="masthead-title">The Fourth <span>Estate</span></h1></a><p class="masthead-tagline">The News. Our News.</p></div></div></header>
   <nav class="nav"><div class="container"><div class="nav-inner"><a href="index.html">Home</a><a href="politics.html">Politics</a><a href="governance.html">Governance</a><a href="international.html">International</a><a href="economics.html">Economics</a><a href="policy.html">Policy</a><a href="media.html">Media</a><a href="society.html">Society &amp; Culture</a><a href="campus.html">Campus Life</a><a href="opinion.html">Opinion</a></div></div></nav>
   <div class="lang-bar"><div class="container"><div class="lang-bar-inner"><span class="lang-label">Read in</span><a href="arabic.html">&#1575;&#1604;&#1593;&#1585;&#1576;&#1610;&#1577;</a><a href="english.html">English</a><a href="french.html">Fran&#231;ais</a></div></div></div>
   <div class="section-hero"><div class="container"><div class="reveal"><div class="section-hero-kicker">Section</div><h1>International</h1><p>Coverage of global affairs, foreign policy, and international relations.</p></div></div></div>
