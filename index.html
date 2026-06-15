@@ -426,5 +426,27 @@
       }
     })();
   </script>
+
+  <script>
+    // Keep logo spin/float continuous across page navigations
+    (function(){
+      var SPIN_DUR = 36; // seconds
+      var FLOAT_DUR = 8; // seconds
+      var key = 'tfeLogoStart';
+      var start = localStorage.getItem(key);
+      if (!start) {
+        start = Date.now();
+        localStorage.setItem(key, start);
+      } else {
+        start = parseInt(start, 10);
+      }
+      var elapsed = (Date.now() - start) / 1000;
+      var spinDelay = -(elapsed % SPIN_DUR);
+      var floatDelay = -(elapsed % FLOAT_DUR);
+      document.querySelectorAll('.logo-3d img').forEach(function(img){
+        img.style.animationDelay = spinDelay + 's, ' + floatDelay + 's';
+      });
+    })();
+  </script>
 </body>
 </html>
