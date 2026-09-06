@@ -1,0 +1,27 @@
+backend:
+  name: git-gateway
+  branch: main
+
+media_folder: "images"
+public_folder: "/images"
+
+collections:
+  - name: "articles"
+    label: "Articles"
+    folder: "_articles"
+    create: true
+    slug: "{{slug}}"
+    fields:
+      - { label: "Title", name: "title", widget: "string" }
+      - { label: "Author", name: "author", widget: "string" }
+      - { label: "Date", name: "date", widget: "datetime" }
+      - label: "Section"
+        name: "section"
+        widget: "select"
+        options: ["Politics", "Governance", "International", "Economics", "Policy", "Media", "Society & Culture", "Campus Life", "Opinion"]
+      - label: "Language"
+        name: "language"
+        widget: "select"
+        options: ["English", "French", "Arabic"]
+      - { label: "Summary", name: "summary", widget: "text" }
+      - { label: "Body", name: "body", widget: "markdown" }
