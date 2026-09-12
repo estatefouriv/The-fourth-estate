@@ -1,0 +1,18 @@
+title: The Fourth Estate
+description: Student Journal of Politics, Policy & Society
+url: "https://moonlit-quokka-5cc915.netlify.app"
+baseurl: ""
+
+collections:
+  articles:
+    output: true
+    permalink: /articles/:slug/
+
+defaults:
+  - scope:
+      path: ""
+      type: articles
+    values:
+      layout: article
+
+markdown: kramdown
