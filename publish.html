@@ -96,6 +96,11 @@
     </div>
 
     <div class="field">
+      <label>Cover Image <span style="font-weight:400;text-transform:none;letter-spacing:0;">(optional — shown at top of article and on cards)</span></label>
+      <input type="file" id="coverImage" accept="image/*" onchange="previewCover(this)" style="padding:8px 0;background:none;border:none;" />
+      <div id="coverPreview" style="display:none;margin-top:10px;"><img id="coverPreviewImg" style="max-width:100%;max-height:200px;border:1px solid var(--rule);object-fit:cover;" /></div>
+    </div>
+    <div class="field">
       <label>Summary * <span style="font-weight:400;text-transform:none;letter-spacing:0;">(1-2 sentences shown on cards)</span></label>
       <input type="text" id="summary" placeholder="Brief description of the article" />
     </div>
@@ -148,6 +153,18 @@
 
 <script>
 // ── Helpers ──────────────────────────────────────────────────────────────────
+function previewCover(input){
+  if(input.files&&input.files[0]){
+    var reader=new FileReader();
+    reader.onload=function(e){
+      document.getElementById('coverPreviewImg').src=e.target.result;
+      document.getElementById('coverPreview').style.display='block';
+      window._coverDataUrl=e.target.result;
+    };
+    reader.readAsDataURL(input.files[0]);
+  }
+}
+
 function slug(str){
   return str.toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'');
 }
@@ -392,6 +409,7 @@ function generateArticle(){
   var language=document.getElementById('language').value;
   var summary=document.getElementById('summary').value.trim();
   var body=document.getElementById('body').value.trim();
+  var coverImage=window._coverDataUrl||'';
 
   if(!title||!author||!section||!language||!summary||!body){
     alert('Please fill in all fields.');return;
@@ -402,7 +420,7 @@ function generateArticle(){
   var articleSlug=slug(title);
   var articleFile='article-'+articleSlug+'.html';
 
-  currentArticle={title,author,section,language,summary,body,dateStr,articleSlug,articleFile};
+  currentArticle={title,author,section,language,summary,body,dateStr,articleSlug,articleFile,coverImage};
   saveArticle(currentArticle);
 
   // Preview
@@ -462,6 +480,7 @@ function buildSectionHTML(sectionName){
     for(var i=0;i<arts.length;i++){
       var a=arts[i];
       html+='        <article class="article-card reveal">\n';
+      if(a.coverImage){html+='          <div style="width:100%;height:160px;overflow:hidden;margin-bottom:14px;"><img src="'+a.coverImage+'" style="width:100%;height:160px;object-fit:cover;" /></div>\n';}
       html+='          <div class="article-card-kicker">'+esc(a.section)+' &middot; '+esc(a.language)+'</div>\n';
       html+='          <h3><a href="'+a.articleFile+'">'+esc(a.title)+'</a></h3>\n';
       html+='          <p>'+esc(a.summary)+'</p>\n';
@@ -508,6 +527,7 @@ function buildLanguageHTML(langName){
     for(var i=0;i<arts.length;i++){
       var a=arts[i];
       html+='        <article class="article-card reveal">\n';
+      if(a.coverImage){html+='          <div style="width:100%;height:160px;overflow:hidden;margin-bottom:14px;"><img src="'+a.coverImage+'" style="width:100%;height:160px;object-fit:cover;" /></div>\n';}
       html+='          <div class="article-card-kicker">'+esc(a.section)+' &middot; '+esc(a.language)+'</div>\n';
       html+='          <h3><a href="'+a.articleFile+'">'+esc(a.title)+'</a></h3>\n';
       html+='          <p>'+esc(a.summary)+'</p>\n';
@@ -572,6 +592,7 @@ function buildIndexHTML(){
     for(var i=0;i<shown.length;i++){
       var a=shown[i];
       html+='        <article class="article-card reveal">\n';
+      if(a.coverImage){html+='          <div style="width:100%;height:160px;overflow:hidden;margin-bottom:14px;"><img src="'+a.coverImage+'" style="width:100%;height:160px;object-fit:cover;" /></div>\n';}
       html+='          <div class="article-card-kicker">'+esc(a.section)+' &middot; '+esc(a.language)+'</div>\n';
       html+='          <h3><a href="'+a.articleFile+'">'+esc(a.title)+'</a></h3>\n';
       html+='          <p>'+esc(a.summary)+'</p>\n';
