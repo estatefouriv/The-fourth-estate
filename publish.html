@@ -173,7 +173,11 @@ function previewCover(input){
 }
 
 function slug(str){
-  return str.toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'');
+  // Try latin slug first
+  var s=str.toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'');
+  // If empty (e.g. Arabic title), use timestamp
+  if(!s||s==='-') s='article-'+Date.now();
+  return s;
 }
 
 function formatDate(d){
