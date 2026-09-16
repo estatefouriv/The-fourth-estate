@@ -39,6 +39,20 @@
     .preview-card h3{font-family:var(--serif);font-size:18px;font-weight:700;margin-bottom:8px;}
     .preview-card p{font-size:13px;color:var(--mid);}
     .preview-card-meta{font-size:11px;color:#aaa;margin-top:8px;}
+
+    #toolbar{background:#f0eeeb;border:1px solid var(--rule);border-bottom:none;padding:8px 10px;display:flex;flex-wrap:wrap;gap:6px;align-items:center;}
+    .toolbar-group{display:flex;gap:3px;align-items:center;padding-right:8px;border-right:1px solid var(--rule);}
+    .toolbar-group:last-child{border-right:none;}
+    #toolbar button{background:#fff;border:1px solid var(--rule);font-family:var(--sans);font-size:12px;font-weight:600;color:var(--dark);padding:4px 8px;cursor:pointer;transition:background .15s;}
+    #toolbar button:hover{background:var(--orange);color:#fff;border-color:var(--orange);}
+    #toolbar select{font-family:var(--sans);font-size:11px;padding:4px 6px;border:1px solid var(--rule);background:#fff;color:var(--dark);cursor:pointer;}
+    #bodyEditor{width:100%;min-height:360px;padding:16px;border:1px solid var(--rule);font-family:var(--body);font-size:15px;line-height:1.8;color:var(--dark);background:var(--white);outline:none;overflow-y:auto;}
+    #bodyEditor:focus{border-color:var(--orange);}
+    #bodyEditor h2{font-family:var(--serif);font-size:22px;font-weight:700;margin:24px 0 10px;border-top:2px solid var(--orange);padding-top:8px;display:inline-block;}
+    #bodyEditor h3{font-family:var(--serif);font-size:18px;font-weight:700;margin:18px 0 8px;}
+    #bodyEditor blockquote{border-left:3px solid var(--orange);padding:4px 0 4px 20px;margin:20px 0;font-style:italic;}
+    #bodyEditor p{margin-bottom:12px;}
+    #bodyEditor a{color:var(--orange);text-decoration:underline;}
     @media(max-width:600px){.row{grid-template-columns:1fr;}.wrap{padding:0 16px;}}
   </style>
 </head>
@@ -107,8 +121,66 @@
 
     <div class="field">
       <label>Article Body *</label>
-      <textarea id="body" placeholder="Write your full article here...&#10;&#10;You can use ## for headings and > for blockquotes.&#10;&#10;Example:&#10;## Introduction&#10;Your first paragraph here...&#10;&#10;## Section Title&#10;More content...&#10;&#10;> This is a blockquote or key quote."></textarea>
-      <p class="tip">Use ## for section headings &nbsp;|&nbsp; Use &gt; for blockquotes &nbsp;|&nbsp; Leave blank lines between paragraphs</p>
+      <div id="toolbar">
+        <div class="toolbar-group">
+          <select onchange="execCmd('fontName',this.value);this.value='';" title="Font">
+            <option value="">Font</option>
+            <option value="'Playfair Display',Georgia,serif">Playfair (Serif)</option>
+            <option value="'DM Sans',sans-serif">DM Sans</option>
+            <option value="'Source Serif 4',Georgia,serif">Source Serif</option>
+            <option value="Georgia,serif">Georgia</option>
+            <option value="Arial,sans-serif">Arial</option>
+            <option value="'Times New Roman',serif">Times New Roman</option>
+          </select>
+          <select onchange="execCmd('fontSize',this.value);this.value='';" title="Size">
+            <option value="">Size</option>
+            <option value="1">Small</option>
+            <option value="3">Normal</option>
+            <option value="4">Large</option>
+            <option value="5">X-Large</option>
+            <option value="6">XX-Large</option>
+          </select>
+        </div>
+        <div class="toolbar-group">
+          <button onclick="execCmd('bold')" title="Bold"><b>B</b></button>
+          <button onclick="execCmd('italic')" title="Italic"><i>I</i></button>
+          <button onclick="execCmd('underline')" title="Underline"><u>U</u></button>
+          <button onclick="execCmd('strikeThrough')" title="Strikethrough"><s>S</s></button>
+        </div>
+        <div class="toolbar-group">
+          <button onclick="execCmd('justifyLeft')" title="Align Left">&#8676;</button>
+          <button onclick="execCmd('justifyCenter')" title="Center">&#8633;</button>
+          <button onclick="execCmd('justifyRight')" title="Align Right">&#8677;</button>
+          <button onclick="execCmd('justifyFull')" title="Justify">&#8644;</button>
+        </div>
+        <div class="toolbar-group">
+          <button onclick="execCmd('insertUnorderedList')" title="Bullet List">&#8226; List</button>
+          <button onclick="execCmd('insertOrderedList')" title="Numbered List">1. List</button>
+          <button onclick="execCmd('outdent')" title="Outdent">&#8676;</button>
+          <button onclick="execCmd('indent')" title="Indent">&#8677;</button>
+        </div>
+        <div class="toolbar-group">
+          <button onclick="insertHeading('h2')" title="Heading 2">H2</button>
+          <button onclick="insertHeading('h3')" title="Heading 3">H3</button>
+          <button onclick="insertBlockquote()" title="Blockquote">&#10077;</button>
+          <button onclick="insertLink()" title="Insert Link">&#128279;</button>
+        </div>
+        <div class="toolbar-group">
+          <label title="Text Color" style="display:flex;align-items:center;gap:4px;cursor:pointer;font-size:11px;font-weight:600;">
+            A <input type="color" onchange="execCmd('foreColor',this.value)" style="width:24px;height:20px;padding:0;border:1px solid #ccc;cursor:pointer;" value="#2C2C2C" />
+          </label>
+          <label title="Highlight" style="display:flex;align-items:center;gap:4px;cursor:pointer;font-size:11px;font-weight:600;">
+            &#9632; <input type="color" onchange="execCmd('hiliteColor',this.value)" style="width:24px;height:20px;padding:0;border:1px solid #ccc;cursor:pointer;" value="#FFF9C4" />
+          </label>
+        </div>
+        <div class="toolbar-group">
+          <button onclick="execCmd('removeFormat')" title="Clear Formatting" style="font-size:10px;">Clear</button>
+          <button onclick="editorSetDir('ltr')" title="Left to Right" style="font-size:10px;">LTR</button>
+          <button onclick="editorSetDir('rtl')" title="Right to Left (Arabic)" style="font-size:10px;">RTL</button>
+        </div>
+      </div>
+      <div id="bodyEditor" contenteditable="true" dir="auto"></div>
+      <p class="tip">Use the toolbar above to format your article. For Arabic, click RTL. For English/French, click LTR.</p>
     </div>
 
     <div class="btn-wrap">
@@ -419,7 +491,7 @@ function generateArticle(){
   var section=document.getElementById('section').value;
   var language=document.getElementById('language').value;
   var summary=document.getElementById('summary').value.trim();
-  var body=document.getElementById('body').value.trim();
+  var body=document.getElementById('bodyEditor').innerHTML.trim();
   var coverImage=window._coverDataUrl||'';
 
   if(!title||!author||!section||!language||!summary||!body){
@@ -462,7 +534,7 @@ function buildArticleHTML(art){
   html+='  </div></div>\n';
   html+='  <div class="article-body-wrap"><div class="container"><div class="article-body">\n';
   html+='    <a href="'+sectionFile+'" class="back-link">\u2190 '+esc(art.section)+'</a>\n';
-  html+=parseBody(art.body);
+  html+=art.body;
   html+='  </div></div></div>\n';
   html+='  <div class="quote-band"><div class="container"><p>Curious minds<span>.</span> Bold ideas<span>.</span> Meaningful stories<span>.</span></p></div></div>\n';
   html+=sharedFooter();
@@ -673,11 +745,37 @@ function downloadIndex(){
 }
 
 function clearForm(){
-  ['title','author','summary','body'].forEach(function(id){document.getElementById(id).value='';});
+  ['title','author','summary'].forEach(function(id){document.getElementById(id).value='';});
+  document.getElementById('bodyEditor').innerHTML='';
+  window._coverDataUrl=null;
   document.getElementById('section').value='';
   document.getElementById('language').value='';
   document.getElementById('output').classList.remove('visible');
   currentArticle=null;
+}
+
+
+// ── Rich Editor ───────────────────────────────────────────────────────────────
+function execCmd(cmd, val){
+  document.getElementById('bodyEditor').focus();
+  document.execCommand(cmd, false, val||null);
+}
+function insertHeading(tag){
+  document.getElementById('bodyEditor').focus();
+  document.execCommand('formatBlock', false, tag);
+}
+function insertBlockquote(){
+  document.getElementById('bodyEditor').focus();
+  document.execCommand('formatBlock', false, 'blockquote');
+}
+function insertLink(){
+  var url=prompt('Enter URL:');
+  if(url){ document.getElementById('bodyEditor').focus(); document.execCommand('createLink',false,url); }
+}
+function editorSetDir(dir){
+  var ed=document.getElementById('bodyEditor');
+  ed.dir=dir;
+  ed.style.textAlign=dir==='rtl'?'right':'left';
 }
 
 // ── Manage Articles ───────────────────────────────────────────────────────────
