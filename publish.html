@@ -794,12 +794,42 @@ function renderManage(){
     html+='<div style="font-size:11px;color:var(--light);margin-top:3px;">'+esc(a.section)+' &middot; '+esc(a.language)+' &middot; '+esc(a.dateStr)+'</div>';
     html+='</div>';
     html+='<div style="display:flex;gap:8px;flex-shrink:0;">';
+    html+='<button onclick="editArticle('+i+')" style="background:var(--orange);color:#fff;border:none;font-family:var(--sans);font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:7px 12px;cursor:pointer;">Edit</button>';
     html+='<button onclick="redownloadArticle('+i+')" style="background:var(--dark);color:#fff;border:none;font-family:var(--sans);font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:7px 12px;cursor:pointer;">Re-download</button>';
     html+='<button onclick="deleteArticle('+i+')" style="background:#c0392b;color:#fff;border:none;font-family:var(--sans);font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:7px 12px;cursor:pointer;">Delete</button>';
     html+='</div>';
     html+='</div>';
   }
   list.innerHTML=html;
+}
+
+
+function editArticle(idx){
+  var arts=getArticles();
+  var a=arts[idx];
+  // Load into form
+  document.getElementById('title').value=a.title;
+  document.getElementById('author').value=a.author;
+  document.getElementById('section').value=a.section;
+  document.getElementById('language').value=a.language;
+  document.getElementById('summary').value=a.summary;
+  document.getElementById('bodyEditor').innerHTML=a.body;
+  if(a.coverImage){
+    window._coverDataUrl=a.coverImage;
+    document.getElementById('coverPreviewImg').src=a.coverImage;
+    document.getElementById('coverPreview').style.display='block';
+  }
+  // Remove old version so it gets replaced on generate
+  arts.splice(idx,1);
+  localStorage.setItem('tfe_articles',JSON.stringify(arts));
+  // Scroll to top of form
+  document.querySelector('.card').scrollIntoView({behavior:'smooth'});
+  // Show notice
+  var notice=document.createElement('div');
+  notice.style.cssText='background:#fff3cd;border:1px solid #ffc107;color:#856404;padding:10px 16px;font-size:13px;margin-bottom:16px;';
+  notice.textContent='Article loaded for editing. Make your changes and click Generate Article Files again.';
+  document.querySelector('.card').prepend(notice);
+  setTimeout(function(){notice.remove();},5000);
 }
 
 function deleteArticle(idx){
