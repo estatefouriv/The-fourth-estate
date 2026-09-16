@@ -402,7 +402,22 @@ function sharedStyles(){
   '    .ambient-blob.b2{width:260px;height:260px;bottom:10%;right:-80px;animation-delay:6s;}\n'+
   '    .ambient-blob.b3{width:200px;height:200px;top:40%;left:50%;animation-delay:11s;}\n'+
   '    @keyframes drift{0%,100%{transform:translate(0,0) scale(1);}33%{transform:translate(30px,-20px) scale(1.1);}66%{transform:translate(-20px,25px) scale(.95);}}\n'+
-  '    @media(max-width:860px){.articles-grid{grid-template-columns:1fr 1fr;}.footer-top{flex-direction:column;}.footer-links{gap:28px;}}\n'+
+  '
+    /* HAMBURGER MENU */
+    .hamburger{display:none;background:none;border:none;cursor:pointer;padding:8px;flex-direction:column;gap:5px;z-index:200;}
+    .hamburger span{display:block;width:24px;height:2px;background:var(--mid);transition:all .3s;}
+    .hamburger.open span:nth-child(1){transform:translateY(7px) rotate(45deg);}
+    .hamburger.open span:nth-child(2){opacity:0;}
+    .hamburger.open span:nth-child(3){transform:translateY(-7px) rotate(-45deg);}
+    .mobile-menu{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:var(--white);z-index:150;flex-direction:column;padding:80px 32px 32px;overflow-y:auto;}
+    .mobile-menu.open{display:flex;}
+    .mobile-menu a{font-family:var(--sans);font-size:16px;font-weight:500;letter-spacing:.06em;text-transform:uppercase;color:var(--dark);padding:16px 0;border-bottom:1px solid var(--rule);transition:color .2s;}
+    .mobile-menu a:hover{color:var(--orange);}
+    .mobile-menu .lang-section{margin-top:24px;padding-top:16px;}
+    .mobile-menu .lang-section h5{font-family:var(--sans);font-size:10px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--orange);margin-bottom:12px;}
+    .mobile-menu-close{position:absolute;top:20px;right:20px;background:none;border:none;font-size:24px;cursor:pointer;color:var(--dark);}
+    @media(max-width:768px){.hamburger{display:flex;}.nav{display:none;}.lang-bar{display:none;}}
+    @media(max-width:860px){.articles-grid{grid-template-columns:1fr 1fr;}.footer-top{flex-direction:column;}.footer-links{gap:28px;}}\n'+
   '    @media(max-width:600px){.container{padding:0 18px;}.footer-links{flex-wrap:wrap;}.topbar-inner{justify-content:center;}.topbar-nav{flex-wrap:wrap;}.articles-grid{grid-template-columns:1fr;}}\n'+
   '    @media(prefers-reduced-motion:reduce){.logo-3d img,.masthead-accent,.ambient-blob{animation:none!important;}.reveal{opacity:1;transform:none;transition:none;}}\n'+
   '  </style>\n';
@@ -438,7 +453,9 @@ function sharedScripts(){
   '    if(localStorage.getItem(\'theme\')===\'dark\'){document.body.classList.add(\'dark\');document.getElementById(\'darkBtn\').textContent=\'\\u2600 Light\';}\n'+
   '    (function(){var w=document.createElement(\'div\');w.innerHTML=\'<div class="ambient-blob b1"></div><div class="ambient-blob b2"></div><div class="ambient-blob b3"></div>\';while(w.firstChild)document.body.insertBefore(w.firstChild,document.body.firstChild);})();\n'+
   '    (function(){var els=document.querySelectorAll(\'.reveal\');if(\'IntersectionObserver\' in window){var obs=new IntersectionObserver(function(entries){entries.forEach(function(e){if(e.isIntersecting){e.target.classList.add(\'in-view\');obs.unobserve(e.target);}});},{threshold:0.12});els.forEach(function(el){obs.observe(el);});}else{els.forEach(function(el){el.classList.add(\'in-view\');});}})();\n'+
-  '    (function(){var S=14;var k=\'tfeLogoStart\';var s=localStorage.getItem(k);if(!s){s=Date.now();localStorage.setItem(k,s);}else{s=parseInt(s,10);}var e=(Date.now()-s)/1000;var d=-(e%S);document.querySelectorAll(\'.logo-3d img\').forEach(function(i){i.style.animationDelay=d+\'s\';});})();\n'+
+  '
+    function toggleMenu(){var h=document.getElementById(\'hamburger\');var m=document.getElementById(\'mobileMenu\');h.classList.toggle(\'open\');m.classList.toggle(\'open\');document.body.style.overflow=m.classList.contains(\'open\')?\'hidden\':\'\';}
+\n    (function(){var S=14;var k=\'tfeLogoStart\';var s=localStorage.getItem(k);if(!s){s=Date.now();localStorage.setItem(k,s);}else{s=parseInt(s,10);}var e=(Date.now()-s)/1000;var d=-(e%S);document.querySelectorAll(\'.logo-3d img\').forEach(function(i){i.style.animationDelay=d+\'s\';});})();\n'+
   '<\/script>\n';
 }
 
