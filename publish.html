@@ -149,6 +149,13 @@
     </div>
   </div>
 
+
+  <div class="card" id="manageCard">
+    <h2>Manage Published Articles</h2>
+    <div id="manageList"></div>
+    <p class="tip" id="manageEmpty" style="display:none;">No articles published yet.</p>
+  </div>
+
 </div>
 
 <script>
@@ -668,6 +675,60 @@ function clearForm(){
   document.getElementById('output').classList.remove('visible');
   currentArticle=null;
 }
+
+// ── Manage Articles ───────────────────────────────────────────────────────────
+function renderManage(){
+  var arts=getArticles();
+  var list=document.getElementById('manageList');
+  var empty=document.getElementById('manageEmpty');
+  if(arts.length===0){list.innerHTML='';empty.style.display='block';return;}
+  empty.style.display='none';
+  var html='';
+  for(var i=0;i<arts.length;i++){
+    var a=arts[i];
+    html+='<div style="display:flex;align-items:center;justify-content:space-between;gap:16px;padding:14px 0;border-bottom:1px solid var(--rule);">';
+    html+='<div>';
+    html+='<div style="font-family:var(--serif);font-size:16px;font-weight:700;color:var(--dark);">'+esc(a.title)+'</div>';
+    html+='<div style="font-size:11px;color:var(--light);margin-top:3px;">'+esc(a.section)+' &middot; '+esc(a.language)+' &middot; '+esc(a.dateStr)+'</div>';
+    html+='</div>';
+    html+='<div style="display:flex;gap:8px;flex-shrink:0;">';
+    html+='<button onclick="redownloadArticle('+i+')" style="background:var(--dark);color:#fff;border:none;font-family:var(--sans);font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:7px 12px;cursor:pointer;">Re-download</button>';
+    html+='<button onclick="deleteArticle('+i+')" style="background:#c0392b;color:#fff;border:none;font-family:var(--sans);font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:7px 12px;cursor:pointer;">Delete</button>';
+    html+='</div>';
+    html+='</div>';
+  }
+  list.innerHTML=html;
+}
+
+function deleteArticle(idx){
+  var arts=getArticles();
+  var art=arts[idx];
+  if(!confirm('Delete "'+art.title+'"?\n\nThis will remove it from the publisher list. You also need to:\n1. Delete '+art.articleFile+' from GitHub\n2. Re-download and re-upload the section, language, and homepage files.')) return;
+  arts.splice(idx,1);
+  localStorage.setItem('tfe_articles',JSON.stringify(arts));
+  // Download updated pages
+  currentArticle=art;
+  downloadSection();
+  downloadLanguage();
+  downloadIndex();
+  currentArticle=null;
+  alert('Article removed. The 3 updated pages have been downloaded — upload them to GitHub to remove the article from your site.');
+  renderManage();
+}
+
+function redownloadArticle(idx){
+  var arts=getArticles();
+  currentArticle=arts[idx];
+  downloadArticle();
+  downloadSection();
+  downloadLanguage();
+  downloadIndex();
+  currentArticle=null;
+}
+
+// Render on load
+renderManage();
+
 </script>
 </body>
 </html>
