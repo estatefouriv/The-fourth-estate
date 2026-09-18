@@ -106,20 +106,51 @@
       .nav{display:none;}
       .lang-bar{display:none;}
     }
+
+    /* HAMBURGER MENU */
+    .hamburger{background:none;border:none;cursor:pointer;padding:8px;display:flex;flex-direction:column;gap:5px;z-index:300;position:relative;}
+    .hamburger span{display:block;width:22px;height:2px;background:rgba(255,255,255,.6);transition:all .3s;}
+    .hamburger:hover span{background:var(--orange);}
+    .hamburger.open span:nth-child(1){transform:translateY(7px) rotate(45deg);background:var(--dark);}
+    .hamburger.open span:nth-child(2){opacity:0;}
+    .hamburger.open span:nth-child(3){transform:translateY(-7px) rotate(-45deg);background:var(--dark);}
+    .mobile-menu{display:none;position:fixed;top:0;right:-320px;width:300px;height:100%;background:var(--white);z-index:250;flex-direction:column;padding:0;overflow-y:auto;box-shadow:-8px 0 40px rgba(0,0,0,.15);transition:right .35s cubic-bezier(.4,0,.2,1);}
+    .mobile-menu.open{right:0;}
+    .mobile-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.4);z-index:240;opacity:0;transition:opacity .3s;}
+    .mobile-overlay.open{display:block;opacity:1;}
+    .mobile-menu-header{background:var(--dark);padding:28px 24px 20px;display:flex;justify-content:space-between;align-items:flex-end;}
+    .mobile-menu-header h2{font-family:var(--serif);font-size:20px;font-weight:900;color:#fff;}
+    .mobile-menu-header h2 span{color:var(--orange);}
+    .mobile-menu-close{background:none;border:none;color:rgba(255,255,255,.5);font-size:20px;cursor:pointer;padding:4px;transition:color .2s;}
+    .mobile-menu-close:hover{color:#fff;}
+    .mobile-menu-section{padding:20px 24px 8px;}
+    .mobile-menu-section h5{font-family:var(--sans);font-size:9px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--orange);margin-bottom:8px;}
+    .mobile-menu a{display:block;font-family:var(--sans);font-size:13px;font-weight:500;letter-spacing:.06em;text-transform:uppercase;color:var(--mid);padding:11px 24px;border-bottom:1px solid var(--rule);transition:color .2s,background .2s;position:relative;}
+    .mobile-menu a:hover{color:var(--orange);background:var(--bg);padding-left:28px;}
+    .mobile-menu a::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--orange);opacity:0;transition:opacity .2s;}
+    .mobile-menu a:hover::before{opacity:1;}
+    .mobile-menu .lang-row{display:flex;gap:0;padding:0 24px;margin:8px 0;}
+    .mobile-menu .lang-row a{padding:10px 16px;border-bottom:none;border-right:1px solid var(--rule);font-size:12px;flex:1;text-align:center;}
+    .mobile-menu .lang-row a:last-child{border-right:none;}
+    body.dark .mobile-menu{background:#1A1A1A;}
+    body.dark .mobile-menu a{color:#999;border-bottom-color:#2E2E2E;}
+    body.dark .mobile-menu a:hover{background:#222;color:var(--orange);}
+    body.dark .mobile-menu-section h5{color:var(--orange);}
+    @media(max-width:768px){.nav{display:none;}.lang-bar{display:none;}}
     @media(max-width:860px){.footer-top{flex-direction:column;}.footer-links{gap:28px;}}
     @media(max-width:600px){.container{padding:0 18px;}.footer-links{flex-wrap:wrap;}.topbar-inner{justify-content:center;}.topbar-nav{flex-wrap:wrap;}}
     @media(prefers-reduced-motion:reduce){.logo-3d img,.masthead-accent,.ambient-blob{animation:none!important;}.reveal{opacity:1;transform:none;transition:none;}}
   </style>
 </head>
 <body>
-  <div class="topbar"><div class="container"><div class="topbar-inner"><nav class="topbar-nav"><a href="https://www.instagram.com/thefourth.estate.ma?utm_source=qr&igsh=MWRrNnRkYWtleTl6Ng==" target="_blank">Instagram</a><a href="https://www.linkedin.com/in/fourth-estate-104751415/" target="_blank">LinkedIn</a><a href="mailto:estatefouriv@gmail.com">Contact</a><button class="dark-toggle" id="darkBtn" onclick="toggleDark()">&#9790; Dark</button></nav></div></div></div>
-  <!-- Hamburger button -->
-  <button class="hamburger" id="hamburger" onclick="toggleMenu()">
-    <span></span><span></span><span></span>
-  </button>
-  <!-- Mobile menu -->
+  <div class="topbar"><div class="container"><div class="topbar-inner"><nav class="topbar-nav"><a href="https://www.instagram.com/thefourth.estate.ma?utm_source=qr&igsh=MWRrNnRkYWtleTl6Ng==" target="_blank">Instagram</a><a href="https://www.linkedin.com/in/fourth-estate-104751415/" target="_blank">LinkedIn</a><a href="mailto:estatefouriv@gmail.com">Contact</a><button class="dark-toggle" id="darkBtn" onclick="toggleDark()">&#9790; Dark</button></nav><button class="hamburger" id="hamburger" onclick="toggleMenu()"><span></span><span></span><span></span></button></div></div></div>
+  <div class="mobile-overlay" id="mobileOverlay" onclick="toggleMenu()"></div>
   <div class="mobile-menu" id="mobileMenu">
-    <button class="mobile-menu-close" onclick="toggleMenu()">&#10005;</button>
+    <div class="mobile-menu-header">
+      <h2>The Fourth <span>Estate</span></h2>
+      <button class="mobile-menu-close" onclick="toggleMenu()">&#10005;</button>
+    </div>
+    <div class="mobile-menu-section"><h5>Sections</h5></div>
     <a href="index.html" onclick="toggleMenu()">Home</a>
     <a href="politics.html" onclick="toggleMenu()">Politics</a>
     <a href="governance.html" onclick="toggleMenu()">Governance</a>
@@ -130,8 +161,8 @@
     <a href="society.html" onclick="toggleMenu()">Society &amp; Culture</a>
     <a href="campus.html" onclick="toggleMenu()">Campus Life</a>
     <a href="opinion.html" onclick="toggleMenu()">Opinion</a>
-    <div class="lang-section">
-      <h5>Read in</h5>
+    <div class="mobile-menu-section" style="margin-top:8px;"><h5>Read In</h5></div>
+    <div class="lang-row">
       <a href="arabic.html" onclick="toggleMenu()">&#1575;&#1604;&#1593;&#1585;&#1576;&#1610;&#1577;</a>
       <a href="english.html" onclick="toggleMenu()">English</a>
       <a href="french.html" onclick="toggleMenu()">Fran&#231;ais</a>
@@ -153,13 +184,16 @@
     (function(){var els=document.querySelectorAll('.reveal');if('IntersectionObserver' in window){var obs=new IntersectionObserver(function(entries){entries.forEach(function(e){if(e.isIntersecting){e.target.classList.add('in-view');obs.unobserve(e.target);}});},{threshold:0.12});els.forEach(function(el){obs.observe(el);});}else{els.forEach(function(el){el.classList.add('in-view');});}})();
     (function(){document.querySelectorAll('.section-tile').forEach(function(t){t.addEventListener('mousemove',function(e){var r=t.getBoundingClientRect();var rx=((e.clientY-r.top-r.height/2)/r.height)*-14;var ry=((e.clientX-r.left-r.width/2)/r.width)*14;t.style.transform='perspective(500px) rotateX('+rx+'deg) rotateY('+ry+'deg) scale3d(1.04,1.04,1.04)';});t.addEventListener('mouseleave',function(){t.style.transform='';});});})();
 
-    // Hamburger menu
+    
+
+
     function toggleMenu(){
       var h=document.getElementById('hamburger');
       var m=document.getElementById('mobileMenu');
-      h.classList.toggle('open');
-      m.classList.toggle('open');
-      document.body.style.overflow=m.classList.contains('open')?'hidden':'';
+      var o=document.getElementById('mobileOverlay');
+      var isOpen=m.classList.contains('open');
+      if(isOpen){m.classList.remove('open');o.classList.remove('open');h.classList.remove('open');document.body.style.overflow='';}
+      else{m.classList.add('open');o.classList.add('open');h.classList.add('open');document.body.style.overflow='hidden';}
     }
 
     (function(){var S=14;var k='tfeLogoStart';var s=localStorage.getItem(k);if(!s){s=Date.now();localStorage.setItem(k,s);}else{s=parseInt(s,10);}var e=(Date.now()-s)/1000;var d=-(e%S);document.querySelectorAll('.logo-3d img').forEach(function(i){i.style.animationDelay=d+'s';});})();
